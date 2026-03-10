@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Vote for Theraplay Pediatrics – Best of St. Tammany</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --gold: #C9A84C; --gold-light: #F0D080;
+  --navy: #0D1B2A; --navy-mid: #152338;
+  --teal: #2A9D8F; --cream: #FAF7F0;
+  --red: #c8102e; --green: #28a745; --site-blue: #1a4b8c;
+}
+body { background: var(--navy); font-family: 'DM Sans', sans-serif; color: var(--cream); min-height: 100vh; }
+
+.header { text-align: center; padding: 36px 20px 16px; }
+.badge { display: inline-block; background: linear-gradient(135deg, var(--teal), #1a7a70); color: white; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 14px; border-radius: 20px; margin-bottom: 12px; }
+.header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.3rem, 4vw, 2rem); color: var(--gold-light); margin-bottom: 6px; }
+.header p { font-size: 0.84rem; color: #7a9ab8; font-weight: 300; }
+.divider { width: 60px; height: 3px; background: linear-gradient(90deg, var(--gold), var(--teal)); margin: 12px auto 24px; border-radius: 2px; }
+
+.progress-wrap { max-width: 480px; margin: 0 auto 22px; padding: 0 16px; }
+.progress-track { display: flex; align-items: center; justify-content: center; overflow-x: auto; padding-bottom: 4px; }
+.pdot { width: 28px; height: 28px; border-radius: 50%; background: #1a2e44; border: 2px solid #253d58; color: #3a5575; font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; flex-shrink: 0; }
+.pdot.active { background: var(--gold); border-color: var(--gold); color: var(--navy); transform: scale(1.2); box-shadow: 0 0 12px rgba(201,168,76,0.5); }
+.pdot.done { background: var(--teal); border-color: var(--teal); color: white; }
+.pline { width: 18px; height: 2px; background: #253d58; flex-shrink: 0; transition: background 0.3s; }
+.pline.done { background: var(--teal); }
+
+.stage { max-width: 400px; margin: 0 auto; padding: 0 14px 36px; }
+.card { display: none; background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.12); border-radius: 18px; overflow: hidden; box-shadow: 0 16px 50px rgba(0,0,0,0.6); animation: fadeUp 0.4s ease; }
+.card.visible { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+.card-head { display: flex; align-items: center; gap: 10px; padding: 16px 18px 10px; }
+.snum { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #a07830); color: var(--navy); font-weight: 700; font-size: 0.78rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.stitle { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--cream); line-height: 1.3; }
+
+.phone-wrap { margin: 0 18px 14px; border-radius: 24px; overflow: hidden; border: 2px solid #2a3d55; box-shadow: 0 6px 24px rgba(0,0,0,0.5); background: #000; }
+.phone-status { background: #000; height: 24px; display: flex; align-items: center; justify-content: center; }
+.phone-notch { width: 70px; height: 16px; background: #000; border-radius: 0 0 12px 12px; border: 1px solid #1a1a1a; }
+.phone-browser-bar { background: #f0f0f0; padding: 6px 10px; display: flex; align-items: center; gap: 7px; border-top: 1px solid #ddd; }
+.browser-controls { display: flex; gap: 8px; }
+.browser-btn { font-size: 0.9rem; color: #555; cursor: pointer; }
+.url-pill { flex: 1; background: #fff; border: 1px solid #ddd; border-radius: 7px; padding: 3px 8px; font-size: 0.6rem; color: #333; font-family: monospace; text-align: center; }
+.browser-more { font-size: 0.9rem; color: #555; }
+
+.screen { background: #fff; min-height: 340px; position: relative; overflow: hidden; }
+
+.site-banner { background: linear-gradient(to right, #0d2050, #1a3a6e); height: 50px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; }
+.site-banner-text { color: rgba(255,255,255,0.9); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; }
+.best-badge-sm { width: 34px; height: 34px; background: #1a4b8c; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 0.38rem; font-weight: 900; color: white; text-align: center; line-height: 1.1; }
+
+.breadcrumb { display: flex; align-items: center; gap: 4px; padding: 7px 10px; font-size: 0.6rem; color: #555; border-bottom: 1px solid #eee; background: #fafafa; }
+.breadcrumb a { color: var(--site-blue); text-decoration: none; }
+.bc-sep { color: #bbb; }
+
+.subcat-list { display: flex; flex-direction: column; }
+.subcat-item { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; font-size: 0.68rem; font-weight: 600; color: #222; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; transition: all 0.15s; background: white; }
+.subcat-item:hover { background: #f0f4ff; color: var(--site-blue); }
+.subcat-item.done-item { color: #2a9d8f; }
+.subcat-item.highlight { background: #fff3f5; color: var(--red); font-weight: 700; position: relative; padding-right: 70px; }
+.subcat-item.highlight::after { content: '← select'; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 0.58rem; color: var(--red); font-weight: 700; animation: blink 1s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+.vote-page-header { padding: 16px 12px 10px; background: #fff; border-bottom: 1px solid #eee; }
+.vote-page-header h2 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #111; margin-bottom: 5px; }
+.vote-page-crumb { font-size: 0.58rem; color: #888; display: flex; align-items: center; gap: 3px; }
+.vote-page-crumb a { color: var(--site-blue); text-decoration: none; }
+
+.nominees { display: flex; flex-direction: column; padding: 8px 10px; gap: 6px; background: #f8f8f8; }
+.nominee { display: flex; align-items: center; gap: 9px; background: white; border-radius: 7px; padding: 9px 10px; cursor: pointer; border: 2px solid transparent; box-shadow: 0 1px 3px rgba(0,0,0,0.07); transition: all 0.2s; }
+.nominee:hover { border-color: #ccc; }
+.nominee.selected { border-color: var(--red); background: #fff8f8; }
+.nominee.highlight { border-color: var(--red); background: #fff8f8; animation: glow 1.2s ease-in-out infinite; }
+@keyframes glow { 0%,100%{box-shadow:0 0 0 0 rgba(200,16,46,0.3);} 50%{box-shadow:0 0 0 5px rgba(200,16,46,0);} }
+.radio { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #ccc; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.nominee.selected .radio, .nominee.highlight .radio { border-color: var(--red); background: var(--red); }
+.nominee.selected .radio::after, .nominee.highlight .radio::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: white; }
+.nom-name { font-size: 0.72rem; font-weight: 600; color: #222; line-height: 1.3; }
+.nom-name.winner { color: var(--red); }
+
+.popup-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: flex-start; justify-content: center; padding-top: 16px; z-index: 10; }
+.popup { background: white; border-radius: 10px; width: 90%; padding: 14px 13px; box-shadow: 0 8px 28px rgba(0,0,0,0.4); animation: popUp 0.35s cubic-bezier(0.34,1.56,0.64,1); position: relative; }
+@keyframes popUp { from{transform:scale(0.85) translateY(16px);opacity:0;} to{transform:scale(1) translateY(0);opacity:1;} }
+.popup-title { text-align: center; font-size: 0.58rem; color: #888; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.1em; }
+.popup-name { text-align: center; font-family: 'Playfair Display', serif; font-size: 0.95rem; color: #111; margin-bottom: 2px; }
+.popup-sub { text-align: center; font-size: 0.58rem; color: #888; margin-bottom: 10px; }
+.popup-question { text-align: center; font-size: 0.65rem; color: #444; margin-bottom: 8px; font-weight: 500; }
+.popup-btn { display: block; width: 100%; padding: 8px; border-radius: 5px; font-size: 0.62rem; font-weight: 700; text-align: center; cursor: pointer; margin-bottom: 5px; border: 1.5px solid #ccc; background: white; color: #333; letter-spacing: 0.04em; text-transform: uppercase; transition: all 0.2s; }
+.popup-btn:hover { background: #f5f5f5; }
+.popup-btn.green { background: var(--green); border-color: var(--green); color: white; }
+.popup-btn.highlight { border-color: var(--red); background: #fff3f5; color: var(--red); animation: glow 1s ease-in-out infinite; }
+.popup-btn.green.highlight { background: var(--green); border-color: var(--green); color: white; animation: glow-green 1s ease-in-out infinite; }
+@keyframes glow-green { 0%,100%{box-shadow:0 0 0 0 rgba(40,167,69,0.5);} 50%{box-shadow:0 0 0 5px rgba(40,167,69,0);} }
+.popup-x { position: absolute; top: 7px; right: 7px; width: 20px; height: 20px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; cursor: pointer; color: #555; }
+.ad-banner { background: #111; padding: 8px; text-align: center; margin-top: 5px; border-radius: 5px; }
+.ad-banner p { color: white; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.04em; }
+.ad-phone-sm { display: inline-block; margin-top: 3px; background: #c9a84c; color: #111; border-radius: 3px; padding: 1px 6px; font-size: 0.55rem; font-weight: 700; }
+
+.review-screen { background: #f8f8f8; min-height: 340px; }
+.review-ad { background: #111; padding: 8px 10px; }
+.review-ad-text { color: white; font-size: 0.55rem; font-weight: 700; letter-spacing: 0.05em; }
+.review-ad-phone-bar { background: #c9a84c; color: #111; font-size: 0.52rem; font-weight: 700; padding: 2px 5px; border-radius: 3px; display: inline-block; margin-top: 3px; }
+.my-votes-title { text-align: center; font-family: 'Playfair Display', serif; font-size: 1rem; color: #111; padding: 11px; background: white; }
+.votes-category { background: #1a1a1a; color: white; text-align: center; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; padding: 6px; text-transform: uppercase; }
+.vote-item { background: white; padding: 7px 12px; border-bottom: 1px solid #f0f0f0; }
+.vote-item-cat { font-size: 0.58rem; color: #888; margin-bottom: 3px; }
+.vote-item-name { background: #d4edda; color: #155724; border-radius: 4px; padding: 4px 9px; font-size: 0.7rem; font-weight: 700; display: inline-block; }
+.review-text { padding: 8px 12px; font-size: 0.6rem; color: #555; line-height: 1.5; background: white; margin-top: 3px; }
+.review-btns { display: flex; gap: 6px; padding: 8px 12px 12px; background: white; }
+.btn-submit { flex: 1; background: #555; color: white; border: none; padding: 9px; border-radius: 5px; font-size: 0.65rem; font-weight: 700; cursor: pointer; letter-spacing: 0.04em; text-transform: uppercase; transition: all 0.2s; }
+.btn-submit.highlight { background: var(--red); animation: glow 1s ease-in-out infinite; }
+.btn-keep { flex: 1; background: var(--red); color: white; border: none; padding: 9px; border-radius: 5px; font-size: 0.65rem; font-weight: 700; cursor: pointer; letter-spacing: 0.04em; text-transform: uppercase; }
+
+.confirm-screen { background: white; min-height: 340px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px 18px; text-align: center; }
+.confirm-check { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #28a745, #1a7030); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 14px; animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.2s both; box-shadow: 0 5px 18px rgba(40,167,69,0.4); }
+@keyframes popIn { from{transform:scale(0);opacity:0;} to{transform:scale(1);opacity:1;} }
+.confirm-h { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #111; margin-bottom: 7px; }
+.confirm-p { font-size: 0.68rem; color: #666; line-height: 1.6; max-width: 240px; }
+.confirm-note { margin-top: 12px; background: #f0f8ff; border-radius: 7px; padding: 9px 12px; font-size: 0.62rem; color: var(--site-blue); line-height: 1.5; max-width: 260px; }
+
+.instruction { margin: 0 18px 12px; background: rgba(42,157,143,0.07); border: 1px solid rgba(42,157,143,0.2); border-radius: 9px; padding: 11px 14px; display: flex; gap: 9px; align-items: flex-start; }
+.instr-icon { font-size: 1rem; flex-shrink: 0; padding-top: 1px; }
+.instr-text { font-size: 0.77rem; color: #a0c4d8; line-height: 1.55; }
+.instr-text strong { color: #5dd6c8; }
+
+.nav-row { display: flex; justify-content: space-between; align-items: center; padding: 0 18px 20px; gap: 8px; }
+.nav-btn { background: transparent; border: 1.5px solid rgba(201,168,76,0.28); color: var(--gold); padding: 8px 18px; border-radius: 7px; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.nav-btn:hover:not(:disabled) { background: rgba(201,168,76,0.1); border-color: var(--gold); }
+.nav-btn:disabled { opacity: 0.22; cursor: not-allowed; }
+.nav-btn.primary { background: linear-gradient(135deg, var(--gold), #9a7428); color: var(--navy); border-color: transparent; font-weight: 700; }
+.nav-btn.primary:hover:not(:disabled) { background: linear-gradient(135deg, var(--gold-light), var(--gold)); box-shadow: 0 4px 14px rgba(201,168,76,0.35); transform: translateY(-1px); }
+.step-count { font-size: 0.7rem; color: #3a5575; }
+
+.auto-row { display: flex; justify-content: center; gap: 10px; align-items: center; padding-bottom: 16px; }
+.toggle-label { display: flex; align-items: center; gap: 7px; cursor: pointer; font-size: 0.72rem; color: #4a6480; user-select: none; }
+.toggle-track { width: 32px; height: 17px; border-radius: 9px; background: #1e2e44; position: relative; transition: background 0.3s; }
+.toggle-track.on { background: var(--teal); }
+.toggle-thumb { width: 11px; height: 11px; border-radius: 50%; background: white; position: absolute; top: 3px; left: 3px; transition: left 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+.toggle-track.on .toggle-thumb { left: 18px; }
+.speed-select { background: #1a2e44; border: 1px solid #2a3d58; color: #5a7898; border-radius: 5px; padding: 3px 6px; font-size: 0.68rem; cursor: pointer; }
+.footer { text-align: center; padding: 14px; font-size: 0.65rem; color: #1e3050; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">✦ Step-by-Step Voting Guide</div>
+  <h1>Vote for Theraplay Pediatrics</h1>
+  <p>Best of St. Tammany 2026 · votesttammany.com</p>
+  <div class="divider"></div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-track" id="progressTrack"></div>
+</div>
+
+<div class="stage" id="stage">
+
+  <!-- Step 1 -->
+  <div class="card" id="card-0">
+    <div class="card-head"><div class="snum">1</div><div class="stitle">Go to votesttammany.com</div></div>
+    <div class="phone-wrap">
+      <div class="phone-status"><div class="phone-notch"></div></div>
+      <div class="screen">
+        <div class="site-banner">
+          <span class="site-banner-text">BEST OF ST. TAMMANY</span>
+          <div class="best-badge-sm">BEST<br>OF<br>ST.T</div>
+        </div>
+        <div style="background:#1a4b8c;color:white;text-align:center;padding:18px 12px 14px;">
+          <div style="font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:5px;">Best of St. Tammany 2026</div>
+          <div style="font-size:0.6rem;opacity:0.8;margin-bottom:12px;">Cast your vote for your St. Tammany favorites!</div>
+          <div style="display:inline-block;background:var(--red);color:white;padding:7px 18px;border-radius:4px;font-size:0.68rem;font-weight:700;letter-spacing:0.06em;">VOTE NOW</div>
+        </div>
+        <div style="background:#f5f5f5;padding:10px;">
+          <div style="font-size:0.62rem;font-weight:700;color:#555;margin-bottom:7px;text-align:center;text-transform:uppercase;letter-spacing:0.08em;">Select a Category</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+            <div style="background:white;border-radius:5px;padding:9px 5px;text-align:center;font-size:0.58rem;font-weight:600;color:#555;box-shadow:0 1px 3px rgba(0,0,0,0.08);">🍽️<br>Food &amp; Drink</div>
+            <div style="background:white;border-radius:5px;padding:9px 5px;text-align:center;font-size:0.58rem;font-weight:700;color:var(--red);box-shadow:0 1px 3px rgba(0,0,0,0.08);border:2px solid var(--red);animation:glow 1.2s ease-in-out infinite;">💊<br>Health &amp; Beauty</div>
+            <div style="background:white;border-radius:5px;padding:9px 5px;text-align:center;font-size:0.58rem;font-weight:600;color:#555;box-shadow:0 1px 3px rgba(0,0,0,0.08);">🏠<br>Home Services</div>
+            <div style="background:white;border-radius:5px;padding:9px 5px;text-align:center;font-size:0.58rem;font-weight:600;color:#555;box-shadow:0 1px 3px rgba(0,0,0,0.08);">🎓<br>Education</div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-browser-bar">
+        <div class="browser-controls"><span class="browser-btn">←</span><span class="browser-btn">→</span></div>
+        <div class="url-pill">votesttammany.com</div>
+        <div class="browser-more">⋯</div>
+      </div>
+    </div>
+    <div class="instruction"><div class="instr-icon">🌐</div><div class="instr-text">Open your browser and go to <strong>votesttammany.com</strong>. On the homepage, find and tap the <strong>Health &amp; Beauty</strong> category (highlighted in red).</div></div>
+  </div>
+
+  <!-- Step 2: H&B list → Pediatric Therapy -->
+  <div class="card" id="card-1">
+    <div class="card-head"><div class="snum">2</div><div class="stitle">Select "Pediatric Therapy"</div></div>
+    <div class="phone-wrap">
+      <div class="phone-status"><div class="phone-notch"></div></div>
+      <div class="screen">
+        <div class="site-banner"><span class="site-banner-text">BEST OF ST. TAMMANY</span><div class="best-badge-sm">BEST<br>OF<br>ST.T</div></div>
+        <div class="breadcrumb"><span>←</span><span>Go Back</span><span class="bc-sep">/</span><a>Health &amp; Beauty</a></div>
+        <div class="subcat-list">
+          <div class="subcat-item">ALTERNATIVE THERAPIES</div>
+          <div class="subcat-item">ASSISTED LIVING</div>
+          <div class="subcat-item">AUDIOLOGY / HEARING CENTER</div>
+          <div class="subcat-item">BARBERSHOP</div>
+          <div class="subcat-item">CANCER TREATMENT CENTER</div>
+          <div class="subcat-item">DENTAL OFFICE</div>
+          <div class="subcat-item">ESTHETICS</div>
+          <div class="subcat-item">EYE CARE</div>
+          <div class="subcat-item">FITNESS CENTER / GYM</div>
+          <div class="subcat-item">HAIR SALON</div>
+          <div class="subcat-item">MASSAGE</div>
+          <div class="subcat-item">MED-SPA</div>
+          <div class="subcat-item">MEDICAL PRACTICE</div>
+          <div class="subcat-item">MENTAL HEALTH SERVICES</div>
+          <div class="subcat-item">NAIL SALON</div>
+          <div class="subcat-item">NURSING HOME</div>
+          <div class="subcat-item">ORTHODONTICS</div>
+          <div class="subcat-item">PEDIATRIC DENTISTRY</div>
+          <div class="subcat-item highlight">PEDIATRIC THERAPY</div>
+          <div class="subcat-item">PEDIATRICS</div>
+          <div class="subcat-item">PHARMACY</div>
+        </div>
+      </div>
+      <div class="phone-browser-bar">
+        <div class="browser-controls"><span class="browser-btn">←</span><span class="browser-btn">→</span></div>
+        <div class="url-pill">votesttammany.com</div>
+        <div class="browser-more">⋯</div>
+      </div>
+    </div>
+    <div class="instruction"><div class="instr-icon">👆</div><div class="instr-text">You're now in <strong>Health &amp; Beauty</strong>. Scroll down and tap <strong>PEDIATRIC THERAPY</strong> (highlighted in red).</div></div>
+  </div>
+
+  <!-- Step 3: Vote Theraplay - Pediatric Therapy -->
+  <div class="card" id="card-2">
+    <div class="card-head"><div class="snum">3</div><div class="stitle">Vote for Theraplay Pediatrics</div></div>
+    <div class="phone-wrap">
+      <div class="phone-status"><div class="phone-notch"></div></div>
+      <div class="screen">
+        <div class="site-banner"><span class="site-banner-text">BEST OF ST. TAMMANY</span><div class="best-badge-sm">BEST<br>OF<br>ST.T</div></div>
+        <div class="vote-page-header">
+          <h2>Pediatric Therapy</h2>
+          <div class="vote-page-crumb"><a>← Health &amp; Beauty</a><span>/</span><span>Pediatric Therapy</span></div>
+        </div>
+        <div class="nominees">
+          <div class="nominee highlight"><div class="radio"></div><div><div class="nom-name winner">Theraplay Pediatrics</div></div></div>
+          <div class="nominee"><div class="radio"></div><div><div class="nom-name">Riverbend Pediatric Therapy</div></div></div>
+          <div class="nominee"><div class="radio"></div><div><div class="nom-name">Southern Pediatric Therapy Clinic</div></div></div>
+          <div class="nominee"><div class="radio"></div><div><div class="nom-name">Arches ABA Therapy</div></div></div>
+          <div class="nominee"><div class="radio"></div><div><div class="nom-name">Parker Therapy Group</div></div></div>
+          <div class="nominee"><div class="radio"></div><div><div class="nom-name">Southern Oaks</div></div></div>
+        </div>
+      </div>
+      <div class="phone-browser-bar">
+        <div class="browser-controls"><span class="browser-btn">←</span><span class="browser-btn">→</span></div>
+        <div class="url-pill">votesttammany.com</div>
+        <div class="browser-more">⋯</div>
+      </div>
+    </div>
+    <div class="instruction"><div class="instr-icon">✅</div><div class="instr-text">Tap the circle (radio button) next to <strong>Theraplay Pediatrics</strong> at the top of the nominee list. It lights up red when selected.</div></div>
+  </div>
+
+  <!-- Step 4: Popup → Vote in Another H&B Category -->
+  <div class="card" id="card-3">
+    <div class="card-head"><div class="snum">4</div><div class="stitle">Tap "Vote in Another Health &amp; Beauty Category"</div></div>
+    <div class="phone-wrap">
+      <div class="phone-status"><div class="phone-notch"></div></div>
+      <div class="screen" style="position:relative;min-height:340px;">
+        <div style="filter:blur(2px);opacity:0.35;">
+          <div class="site-banner"></div>
+          <div class="vote-page-header"><h2>Pediatric Therapy</h2></div>
+          <div class="nominees">
+            <div class="nominee selected"><div class="radio"></div><div><div class="nom-name">Theraplay Pediatrics</div></div></div>
+            <div class="nominee"><div class="radio"></div><div><div class="nom-name">Riverbend Pediatric Therapy</div></div></div>
+          </div>
+        </div>
+        <div class="popup-overlay">
+          <div class="popup">
+            <div class="popup-x">✕</div>
+            <div class="popup-title">Your Vote for</div>
+            <div class="popup-name">Theraplay Pediatrics</div>
+            <div class="popup-sub">has been added to your ballot</div>
+            <div class="popup-question">What would you like to do next?</div>
+            <button class="popup-btn highlight">VOTE IN ANOTHER HEALTH &amp; BEAUTY CATEGORY</button>
+            <button class="popup-btn">VOTE IN NEXT SUBCATEGORY PEDIATRICS</button>
+            <button class="popup-btn">VOTE IN ANOTHER MAIN CATEGORY</button>
+            <button class="popup-btn green">REVIEW AND CAST MY BALLOT</button>
+            <div class="ad-banner"><p>MORRIS &amp; DEWETT INJURY LAWYERS · REAL CASES. REAL INJURIES.</p><span class="ad-phone-sm">(985) 328-2332</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-browser-bar">
+        <div class="browser-controls"><span class="browser-btn">←</span><span class="browser-btn">→</span></div>
+        <div class="url-pill">votesttammany.com</div>
+        <div class="browser-more">⋯</div>
+      </div>
+    </div>
+    <div class="instruction"><div class="instr-icon">🗳️</div><div class="instr-text">A confirmation popup appears! Tap <strong>"Vote in Another Health &amp; Beauty Category"</strong> (highlighted in red) so you can vote in Speech Therapy too.</div></div>
+  </div>
+
+  <!-- Step 5: H&B list → Speech Therapy -->
+  <div class="card" id="card-4">
+    <div class="card-head"><div class="snum">5</div><div class="stitle">Select "Speech Therapy"</div></div>
+    <div class="phone-wrap">
+      <div class="phone-status"><div class="phone-notch"></div></div>
+      <div class="screen">
+        <div class="site-banner"><span class="site-banner-text">BEST OF ST. TAMMANY</span><div class="best-badge-sm">BEST<br>OF<br>ST.T</div></div>
+        <div class="breadcrumb"><span>←</span><span>Go Back</span><span class="bc-sep">/</span><a>Health &amp; Beauty</a></div>
+        <div class="subcat-list">
+          <div class="subcat-item">MASSAGE</div>
+          <div class="subcat-item">MED-SPA</div>
+          <div class="subcat-item">MEDICAL PRACTICE</div>
+          <div class="subcat-item">MENTAL HEALTH SERVICES</div>
+          <div class="subcat-item">NAIL SALON</div>
+          <div class="subcat-item">NURSING HOME</div>
+          <div class="subcat-item">ORAL SURGERY</div>
+          <div class="subcat-item">ORTHODONTICS</div>
+          <div class="subcat-item">ORTHOPEDICS</div>
+          <div class="subcat-item">PEDIATRIC DENTISTRY</div>
+          <div class="subcat-item done-item">PEDIATRIC THERAPY ✓</div>
+          <div class="subcat-item">PEDIATRICS</div>
+          <div class="subcat-item">PHARMACY</div>
+          <div class="subcat-item">PHYSICAL THERAPY</div>
+          <div class="subcat-item">PLACE TO HAVE A BABY</div>
+          <div class="subcat-item">PODIATRY</div>
+          <div class="subcat-item">PRIMARY CARE</div>
+          <div class="subcat-item highlight">SPEECH THERAPY</div>
+          <div class="subcat-item">TANNING SALON</div>
+          <div class="subcat-item">URGENT CARE / WALK-IN CLINIC</div>
+          <div class="subcat-item">WAXING</div>
+        </div>
+      </div>
+      <div class="phone-browser-bar">
+        <div class="browser-controls"><span class="browser-btn">←</span><span class="browser-btn">→</span></div>
+        <div class="url-pill">votesttammany.com</div>
+        <div class="browser-more">⋯</div>
+      </div>
+    </div>
+    <div class="instruction"><div class="instr-icon">🔍</div><div class="instr-text">You're back in the Health &amp; Beauty list. Scroll down and tap <strong>SPEECH THERAPY</strong> (highlighted in red). Notice Pediatric Therapy now shows a ✓ since you already voted there.</div></div>
+  </div>
+
+  <!-- Step 6: Vote Theraplay - Speech Therapy -->
+  <div class="card" id="card-5">
+    <div class="card-head"><div class="snum">6</div><div class="stitle">Vote for Theraplay Pediatrics Again</div></div>
+    <div class="phone-wrap">
+      <div class="phone-status"><div class="phone-notch"></div></div>
+      <div class="screen">
+        <div class="site-banner"><span class="site-banner-text">BEST OF ST. TAMMANY</span><div class="best-badge-sm">BEST<br>OF<br>ST.T</div></div>
+        <div class="vote-page-header">
+          <h2>Speech Therapy</h2>
+          <div class="vote-page-crumb"><a>← Health &amp; Beauty</a><span>/</span><span>Speech Therapy</span></div>
+        </div>
+        <div class="nominees">
+          <div class="nominee highlight"><div class="radio"></div><div><div class="nom-name winner">Theraplay Pediatrics</div></div></div>
+          <div class="nominee"><div class="radio"></div><div><div class="nom-name">TASS Stroke &amp; Brain Injury Rehabilitation</div></div></div>
+          <div class="nominee"><div class="radio"></div><div><div class="nom-name">New Heights Therapy Center</div></div></div>
+          <div class="nominee"><div class="radio"></div><div><div class="nom-name">Lakeshore Manor Nursing &amp; Rehab</div></div></div>
+          <div class="nominee"><div class="radio"></div><div><div class="nom-name">Southern Physical Therapy Clinic</div></div></div>
+        </div>
+      </div>
+      <div class="phone-browser-bar">
+        <div class="browser-controls"><span class="browser-btn">←</span><span class="browser-btn">→</span></div>
+        <div class="url-pill">votesttammany.com</div>
+        <div class="browser-more">⋯</div>
+      </div>
+    </div>
+    <div class="instruction"><div class="instr-icon">✅</div><div class="instr-text">Tap the circle next to <strong>Theraplay Pediatrics</strong> at the top of the Speech Therapy nominees list.</div></div>
+  </div>
+
+  <!-- Step 7: Popup → Review and Cast Ballot -->
+  <div class="card" id="card-6">
+    <div class="card-head"><div class="snum">7</div><div class="stitle">Tap "Review and Cast My Ballot"</div></div>
+    <div class="phone-wrap">
+      <div class="phone-status"><div class="phone-notch"></div></div>
+      <div class="screen" style="position:relative;min-height:340px;">
+        <div style="filter:blur(2px);opacity:0.35;">
+          <div class="site-banner"></div>
+          <div class="vote-page-header"><h2>Speech Therapy</h2></div>
+          <div class="nominees">
+            <div class="nominee selected"><div class="radio"></div><div><div class="nom-name">Theraplay Pediatrics</div></div></div>
+          </div>
+        </div>
+        <div class="popup-overlay">
+          <div class="popup">
+            <div class="popup-x">✕</div>
+            <div class="popup-title">Your Vote for</div>
+            <div class="popup-name">Theraplay Pediatrics</div>
+            <div class="popup-sub">has been added to your ballot</div>
+            <div class="popup-question">What would you like to do next?</div>
+            <button class="popup-btn">VOTE IN ANOTHER HEALTH &amp; BEAUTY CATEGORY</button>
+            <button class="popup-btn">VOTE IN NEXT SUBCATEGORY TANNING SALON</button>
+            <button class="popup-btn">VOTE IN ANOTHER MAIN CATEGORY</button>
+            <button class="popup-btn green highlight">REVIEW AND CAST MY BALLOT</button>
+            <div class="ad-banner"><p>MORRIS &amp; DEWETT INJURY LAWYERS · REAL CASES. REAL INJURIES.</p><span class="ad-phone-sm">(985) 328-2332</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-browser-bar">
+        <div class="browser-controls"><span class="browser-btn">←</span><span class="browser-btn">→</span></div>
+        <div class="url-pill">votesttammany.com</div>
+        <div class="browser-more">⋯</div>
+      </div>
+    </div>
+    <div class="instruction"><div class="instr-icon">📋</div><div class="instr-text">The popup confirms your Speech Therapy vote! Now tap the green <strong>"Review and Cast My Ballot"</strong> button to see your complete ballot before submitting.</div></div>
+  </div>
+
+  <!-- Step 8: My Votes + Submit -->
+  <div class="card" id="card-7">
+    <div class="card-head"><div class="snum">8</div><div class="stitle">Review Your Votes &amp; Submit Ballot</div></div>
+    <div class="phone-wrap">
+      <div class="phone-status"><div class="phone-notch"></div></div>
+      <div class="screen">
+        <div class="review-screen">
+          <div class="review-ad">
+            <div class="review-ad-text">MORRIS &amp; DEWETT INJURY LAWYERS · REAL CASES. REAL INJURIES.</div>
+            <div class="review-ad-phone-bar">(985) 328-2332 · MORRISDEWETT.COM</div>
+          </div>
+          <div class="my-votes-title">MY VOTES</div>
+          <div class="votes-category">HEALTH &amp; BEAUTY</div>
+          <div class="vote-item">
+            <div class="vote-item-cat">Speech Therapy</div>
+            <div class="vote-item-name">Theraplay Pediatrics</div>
+          </div>
+          <div class="vote-item">
+            <div class="vote-item-cat">Pediatric Therapy</div>
+            <div class="vote-item-name">Theraplay Pediatrics</div>
+          </div>
+          <div class="review-text">Your vote has been marked. You can review your ballot selections above. Please continue to VOTE IN MORE CATEGORIES or click the SUBMIT YOUR BALLOT button to officially cast your votes. You can vote in every category once a day, so remember to come back tomorrow!</div>
+          <div class="review-btns">
+            <button class="btn-submit highlight">SUBMIT BALLOT</button>
+            <button class="btn-keep">KEEP VOTING</button>
+          </div>
+        </div>
+      </div>
+      <div class="phone-browser-bar">
+        <div class="browser-controls"><span class="browser-btn">←</span><span class="browser-btn">→</span></div>
+        <div class="url-pill">votesttammany.com</div>
+        <div class="browser-more">⋯</div>
+      </div>
+    </div>
+    <div class="instruction"><div class="instr-icon">🗳️</div><div class="instr-text">Review your ballot — you'll see <strong>Theraplay Pediatrics</strong> listed under both <strong>Speech Therapy</strong> and <strong>Pediatric Therapy</strong>. Tap the gray <strong>SUBMIT BALLOT</strong> button to officially cast your votes!</div></div>
+  </div>
+
+  <!-- Step 9: Done -->
+  <div class="card" id="card-8">
+    <div class="card-head"><div class="snum">9</div><div class="stitle">You Did It! 🎉</div></div>
+    <div class="phone-wrap">
+      <div class="phone-status"><div class="phone-notch"></div></div>
+      <div class="screen">
+        <div class="confirm-screen">
+          <div class="confirm-check">✓</div>
+          <div class="confirm-h">Ballot Submitted!</div>
+          <p class="confirm-p">Thank you for voting for <strong>Theraplay Pediatrics</strong> in both Pediatric Therapy and Speech Therapy!</p>
+          <div class="confirm-note">📅 <strong>Vote again tomorrow!</strong><br>You can cast a new ballot every single day. Come back to <strong>votesttammany.com</strong> daily to help Theraplay Pediatrics win Best of St. Tammany 2026!</div>
+        </div>
+      </div>
+      <div class="phone-browser-bar">
+        <div class="browser-controls"><span class="browser-btn">←</span><span class="browser-btn">→</span></div>
+        <div class="url-pill">votesttammany.com</div>
+        <div class="browser-more">⋯</div>
+      </div>
+    </div>
+    <div class="instruction"><div class="instr-icon">🎊</div><div class="instr-text">Your ballot is officially cast! You've voted for <strong>Theraplay Pediatrics</strong> in both categories. Remember — you can vote <strong>once per day</strong>, so share this guide and come back tomorrow!</div></div>
+  </div>
+
+  <!-- Auto-play + Nav -->
+  <div class="auto-row">
+    <label class="toggle-label" onclick="toggleAuto()">
+      <div class="toggle-track" id="toggleTrack"><div class="toggle-thumb"></div></div>
+      <span>Auto-play</span>
+    </label>
+    <select class="speed-select" id="speedSelect" onchange="updateSpeed()">
+      <option value="3500">Slow (3.5s)</option>
+      <option value="2500" selected>Normal (2.5s)</option>
+      <option value="1500">Fast (1.5s)</option>
+    </select>
+  </div>
+
+  <div class="nav-row">
+    <button class="nav-btn" id="prevBtn" onclick="go(-1)" disabled>← Back</button>
+    <span class="step-count" id="stepCount">Step 1 of 9</span>
+    <button class="nav-btn primary" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+
+</div>
+
+<div class="footer">votesttammany.com · Best of St. Tammany 2026 · Vote every day!</div>
+
+<script>
+const TOTAL = 9;
+let current = 0, autoPlay = false, autoTimer = null, speed = 2500;
+const labels = ['Visit Site','H&B List','Vote Ped.','Popup #1','H&B List','Vote Speech','Popup #2','Review','Done!'];
+
+function buildProgress() {
+  const track = document.getElementById('progressTrack');
+  track.innerHTML = '';
+  for (let i = 0; i < TOTAL; i++) {
+    if (i > 0) {
+      const l = document.createElement('div');
+      l.className = 'pline' + (i <= current ? ' done' : '');
+      track.appendChild(l);
+    }
+    const d = document.createElement('div');
+    d.className = 'pdot' + (i === current ? ' active' : i < current ? ' done' : '');
+    d.textContent = i < current ? '✓' : (i + 1);
+    d.title = labels[i];
+    d.onclick = () => jumpTo(i);
+    track.appendChild(d);
+  }
+}
+
+function showCard(idx) {
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('visible'));
+  document.getElementById('card-' + idx).classList.add('visible');
+  document.getElementById('prevBtn').disabled = idx === 0;
+  const nb = document.getElementById('nextBtn');
+  nb.disabled = idx === TOTAL - 1;
+  nb.textContent = idx === TOTAL - 1 ? 'Done ✓' : 'Next →';
+  document.getElementById('stepCount').textContent = 'Step ' + (idx+1) + ' of ' + TOTAL;
+  buildProgress();
+  document.querySelector('.stage').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function go(dir) {
+  const n = current + dir;
+  if (n < 0 || n >= TOTAL) return;
+  current = n; showCard(current);
+}
+function jumpTo(idx) { current = idx; showCard(current); }
+
+function toggleAuto() {
+  autoPlay = !autoPlay;
+  document.getElementById('toggleTrack').classList.toggle('on', autoPlay);
+  if (autoPlay) scheduleNext(); else clearTimeout(autoTimer);
+}
+function scheduleNext() {
+  if (!autoPlay) return;
+  autoTimer = setTimeout(() => {
+    if (current < TOTAL - 1) { go(1); scheduleNext(); }
+    else { autoPlay = false; document.getElementById('toggleTrack').classList.remove('on'); }
+  }, speed);
+}
+function updateSpeed() {
+  speed = parseInt(document.getElementById('speedSelect').value);
+  if (autoPlay) { clearTimeout(autoTimer); scheduleNext(); }
+}
+
+buildProgress(); showCard(0);
+</script>
+</body>
+</html>
